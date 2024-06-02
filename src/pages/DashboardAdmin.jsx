@@ -17,7 +17,7 @@ import receiptBackground from '../assets/receipt-background.jpg';
     };
   return (
     <div>
-    <TopBar onLogout={handleLogout} />
+    <TopBar />
         <Grid container spacing={2} style={{ padding: 20 }}>
         <Grid item xs={4} sm={4} md={4}>
             <Card sx={{ maxWidth: 500 }}>
@@ -41,7 +41,7 @@ import receiptBackground from '../assets/receipt-background.jpg';
         </Grid>
         <Grid item xs={4} sm={4} md={4}>
             <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea onClick={() => navigate('/add-instructor')}>
+            <CardActionArea onClick={() => navigate('/Instructori')}>
                 <CardMedia
                 component="img"
                 image={instructorBackground}
@@ -57,13 +57,13 @@ import receiptBackground from '../assets/receipt-background.jpg';
                 </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActionArea onClick={() => navigateTo('/manage-instructors')}>
+            <CardActionArea onClick={() => navigate('/Instructori')}>
             </CardActionArea>
             </Card>
         </Grid>
         <Grid item xs={4} sm={4} md={4}>
             <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea onClick={() => navigateTo('/add-receipt')}>
+            <CardActionArea onClick={() => navigate('/Receipts')}>
                 <CardMedia
                 component="img"
                 image={receiptBackground}
@@ -79,7 +79,7 @@ import receiptBackground from '../assets/receipt-background.jpg';
                 </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActionArea onClick={() => navigateTo('/manage-receipts')}>
+            <CardActionArea onClick={() => navigate('/Receipts')}>
             </CardActionArea>
         </Card>
       </Grid>

@@ -14,9 +14,6 @@ const DashboardInst = ({ token }) => {
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-          <SessionForm instructorId={instructorId} onSuccess={() => console.log('Session added!')} />
-          </Grid>
-          <Grid item xs={12} md={6}>
             <InstructorCalendar />
           </Grid>
         </Grid>

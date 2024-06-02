@@ -81,7 +81,7 @@ const SignUp = () => {
                   type="email"
                   name="email"
                   label="Email"
-                  variant="standard"
+                  variant="outlined"
                   value={formData.email}
                   onChange={handleChange}
                 />

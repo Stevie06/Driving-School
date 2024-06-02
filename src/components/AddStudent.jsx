@@ -16,7 +16,8 @@ const AddStudent = () => {
     });
 
     const [open, setOpen] = useState(false);
-
+    const [message, setMessage] = useState('');
+    
     const handleChangeAuth = (event) => {
         setAuthData({
             ...authData,
@@ -41,7 +42,7 @@ const AddStudent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { user, error: authError } = await supabase.auth.signUp({
+        const { data:{user}, error: authError } = await supabase.auth.signUp({
             email: authData.email,
             password: authData.password
         });
@@ -139,7 +140,7 @@ const AddStudent = () => {
                 Adauga Student
             </Button>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" variant="filled" elevation={6} sx={{ width: '100%' }}>
+                <Alert onClose={handleClose} severity="success" variant="filled" elevation={6} sx={{ width: '100%' ,alignSelf: 'center'}}>
                     Student added successfully!
                 </Alert>
             </Snackbar>
