@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../client';
-import { Button, TextField, Typography, Container, Paper, Grid, Box, Snackbar, Alert } from '@mui/material';
+import { Button, TextField, Typography, Box, Snackbar, Alert, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
 const AddStudent = () => {
     const [authData, setAuthData] = useState({
         email: '',
         password: ''
     });
-
     const [studentData, setStudentData] = useState({
         username: '',
         cnp: '',
         phone: '',
-        address: ''
+        address: '',
+        //Dateofbirth: '',
+        instructorid: ''
     });
-
+    const [instructors, setInstructors] = useState([]);
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
-    
+
+    useEffect(() => {
+        const fetchInstructors = async () => {
+            const { data, error } = await supabase
+                .from('users')
+                .select('id, username')
+                .eq('role', 'instructor');
+
+            if (error) {
+                console.error('Error fetching instructors:', error);
+            } else if (data) {
+                console.log('Fetched instructors:', data); 
+                setInstructors(data);
+            }
+        };
+
+        fetchInstructors();
+    }, []);
+
     const handleChangeAuth = (event) => {
         setAuthData({
             ...authData,
@@ -37,32 +56,31 @@ const AddStudent = () => {
             return;
         }
         setOpen(false);
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { data:{user}, error: authError } = await supabase.auth.signUp({
+        const { data: { user }, error: authError } = await supabase.auth.signUp({
             email: authData.email,
             password: authData.password
         });
 
         if (authError) {
-            alert('Error adding student: ' + authError.message);
+            setMessage(`Error adding student: ${authError.message}`);
+            setOpen(true);
             return;
         }
 
         if (user) {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('users')
                 .update({
-                    username: studentData.username,
-                    cnp: studentData.cnp,
-                    phone: studentData.phone,
-                    address: studentData.address,
+                    ...studentData,
+                    instructorid: studentData.instructorid,
                 })
                 .eq('id', user.id); 
-    
+
             if (error) {
                 setMessage(`Update Error: ${error.message}`);
                 setOpen(true);
@@ -70,8 +88,6 @@ const AddStudent = () => {
                 setMessage('Student details updated successfully!');
                 setOpen(true);
             }
-        }else {
-            setOpen(true);
         }
     };
 
@@ -132,6 +148,21 @@ const AddStudent = () => {
                 value={studentData.address}
                 onChange={handleChangeStudent}
             />
+            
+             <FormControl fullWidth margin="normal">
+                <InputLabel id="instructor-label">Instructor</InputLabel>
+                <Select
+                    labelId="instructor-label"
+                    id="instructor-select"
+                    value={studentData.instructorid}
+                    label="Instructor"
+                    onChange={(e) => handleChangeStudent({ target: { name: 'instructorid', value: e.target.value } })}
+                >
+                    {instructors.map((instructor) => (
+                        <MenuItem key={instructor.id} value={instructor.id}>{instructor.username}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
             <Button
                 type="submit"
                 fullWidth

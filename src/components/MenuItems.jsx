@@ -8,10 +8,11 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import  Person  from '@mui/icons-material/Person';
 
 const menuItems = [
-  { text: 'Home', path: '/DashboardInst',Icon: HouseIcon, color: 'gray' },
+  { text: 'Home', path: '/DashboardAdmin',Icon: HouseIcon, color: 'gray' },
   { text: 'Programari', path: '/Programari', Icon: EventNoteIcon, color: 'gray' },
   { text: 'Sesiune de condus', path: '/Sesiune_condus', Icon: MenuBookIcon, color: 'gray' },
-  { text: 'Studenti', path: '/Studenti', Icon: Person , color: 'gray' },
+  { text: 'Studenti', path: '/Studenti', Icon: Person , color: 'gray' }, 
+  { text: 'Profil', path: '/Profile', Icon: AccountCircleIcon, color: 'gray' },
   { text: 'Schimba parola', path: '/ChangePassword', Icon: AccountCircleIcon, color: 'gray' }
 ];
 
@@ -38,4 +39,4 @@ function MenuItems() {
   );
 }
 
-export default MenuItems;
+export default MenuItems; 

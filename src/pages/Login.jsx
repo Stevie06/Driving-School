@@ -30,7 +30,6 @@ const Login = () => {
             alert(error.message);
             return;
         }
-
         
         const { data, error: roleError } = await supabase
             .from('users')

@@ -10,14 +10,7 @@ const Studenti = () => {
     return (
         <div>
             <TopBar />
-            <Container sx={{
-                display: 'flex',
-                flexDirection: 'column', 
-                alignItems: 'center',    
-                justifyContent: 'center', 
-                height: 'calc(100vh - 64px)', 
-                paddingTop: '64px'
-            }}>
+            <Grid paddingTop={2}>
                 <Grid container justifyContent="center">
                     <Grid item xs={12} sm={8} md={6} lg={4}>
                         <Paper elevation={3} sx={{ padding: 4, margin: 2, width: '500px' }}>
@@ -25,7 +18,7 @@ const Studenti = () => {
                         </Paper>
                     </Grid>
                 </Grid>
-            </Container>
+            </Grid>
         </div>
     );
 };

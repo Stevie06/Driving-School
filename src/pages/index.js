@@ -7,5 +7,7 @@ import DashboardAdmin from './DashboardAdmin';
 import DashboardStud from './DashboardStud';
 import ChangePassword from './ChangePassword';
 import Receipts from './Receipts';
+import Programari from './Programari';
 import Sesiune_condus from './Sesiune_condus';
-export {Login,SignUp,DashboardInst,Studenti,Sesiune_condus,Instructori,ChangePassword,DashboardAdmin,DashboardStud,Receipts}
+import Profile from './Profile';
+export {Login,SignUp,DashboardInst,Studenti,Programari,Sesiune_condus,Instructori,ChangePassword,Profile,DashboardAdmin,DashboardStud,Receipts}

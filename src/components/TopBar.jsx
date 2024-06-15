@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Avatar, Drawer } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, Avatar, Menu, MenuItem } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuItems from './MenuItems';
 import { supabase } from '../client'; 
-
+import MenuItems from './MenuItems';
+import MenuIcon from '@mui/icons-material/Menu';
 const TopBar = () => {
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
 
-  const toggleDrawer = (open) => (event) => {
+  const toogleDrawer = (open) =>(event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    setDrawerOpen(open);
-  };
-
-  const handleAvatarClick = (event) => {
+    setIsDrawerOpen(open);
+  }
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -34,40 +32,56 @@ const TopBar = () => {
     <AppBar position="static" sx={{ bgcolor: 'gray' }}>
       <Toolbar>
         <IconButton
+          size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
-          onClick={toggleDrawer(true)}
-        >
+          onClick={toogleDrawer(true)}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" fontFamily={'Segoe UI Emoji'} sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Adelante
         </Typography>
-        <Avatar onClick={handleAvatarClick} sx={{ cursor: 'pointer' }}></Avatar>
+        <Drawer
+        anchor='left'
+        open={isDrawerOpen}
+        onClose={toogleDrawer(false)}
+        >
+          <MenuItems/>
+        </Drawer>
+        <IconButton onClick={handleMenu} size="large" sx={{ p: 0 }}>
+          <Avatar alt="User" /> {/* Consider adding a src attribute if user images are available */}
+        </IconButton>
         <Menu
+          id="menu-appbar"
           anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
           open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
+          onClose={handleClose}
         >
           <MenuItem onClick={() => {
-            handleMenuClose();
-            navigate('/profile'); 
-          }}>Profile</MenuItem>
+            handleClose();
+            navigate('/Profile');
+          }}>Editeaza Profil</MenuItem>
           <MenuItem onClick={() => {
-            handleMenuClose();
+            handleClose();
+            navigate('/ChangePassword');
+          }}>Schimba parola</MenuItem>
+          <MenuItem onClick={() => {
+            handleClose();
             handleLogout();
           }}>Logout</MenuItem>
         </Menu>
       </Toolbar>
-      <Drawer
-        anchor="left"
-        open={isDrawerOpen}
-        onClose={toggleDrawer(false)}
-      >
-        <MenuItems />
-      </Drawer>
     </AppBar>
   );
 };

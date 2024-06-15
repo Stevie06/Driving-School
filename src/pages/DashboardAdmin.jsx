@@ -1,91 +1,102 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../client';
-import { Card, CardActionArea, CardMedia, CardContent, Typography, Grid } from '@mui/material';
+import { Card, CardActionArea, CardMedia, CardContent, Typography, Grid, Icon,Box, Button, Container, Paper, Breadcrumbs } from '@mui/material';
 import TopBar from '../components/TopBar';
-import instructorBackground from '../assets/instructor-background.jpg';
-import studentBackground from '../assets/student-background.jpg';
-import receiptBackground from '../assets/receipt-background.jpg';
-    const DashboardAdmin = () => {
+import SchoolIcon from '@mui/icons-material/School';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import StudentsTable from '../components/StudentsTable';
+import CarCarousel from '../components/CarCarousel';
+
+const DashboardAdmin = () => {
         
-    const navigate = useNavigate();
+        const  [stats, setStats] = useState({
+            students: 0,
+            instructors: 0,
+            cars:0,
+        });
 
-
-    const handleLogout = () => {
-        sessionStorage.removeItem('token');
-        navigate('/');
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .select('id, role');
+                    if (userError) throw userError;
+    
+                    const { data: carsData, error: carsError } = await supabase
+                        .from('cars')
+                        .select('car_id');
+                    if (carsError) throw carsError;
+    
+                    setStats({
+                        students: userData.filter(user => user.role === 'user').length,
+                        instructors: userData.filter(user => user.role === 'instructor').length,
+                        cars: carsData.length,
+                    });
+                } catch (error) {
+                    console.error('Error fetching data:', error.message);
+                }
+            };
+    
+            fetchData();
+        }, []);
+        const cardData = [
+            {
+                title: "Students",
+                value: stats.students,
+                icon: <SchoolIcon />,
+                bgcolor: '#f5f5f5'
+            },
+            {
+                title: "Instructors",
+                value: stats.instructors,
+                icon: <SupervisorAccountIcon />,
+                bgcolor: "#e3f2fd"
+            },
+            {
+                title: "Cars",
+                value: stats.cars,
+                icon: <DirectionsCarIcon />,
+                bgcolor: '#f5f5f5'
+            }
+        ];
+    
+        return (
+            <Box>
+            <Grid >
+                <TopBar/>
+                <Grid container spacing={4} paddingX={6} paddingTop={4} >
+                    {cardData.map((card, index) => (
+                        <Grid item xs={12} sm={4} key={index}>
+                            <Card sx={{ display: 'flex', bgcolor: card.bgcolor, height: '100%' }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+                                    {card.icon }
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 5, alignItems: 'flex-end', p: 1 }}>
+                                    <Typography variant="h5" component="div">
+                                        {card.title}
+                                    </Typography>
+                                    <Typography variant="h4">
+                                        {card.value}
+                                    </Typography>
+                                </Box>
+                            </Card>
+                    
+                        </Grid>
+                    ))}
+                </Grid>
+                <Grid container spacing={2} columnGap={5} paddingTop={10} paddingX={5} alignItems="flex-start"> 
+                    
+                        <StudentsTable/>
+                        <CarCarousel/>
+                    
+                    
+                </Grid>
+            </Grid>
+        </Box>
+        );
     };
-  return (
-    <div>
-    <TopBar />
-        <Grid container spacing={2} style={{ padding: 20 }}>
-        <Grid item xs={4} sm={4} md={4}>
-            <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea onClick={() => navigate('/Studenti')}>
-                <CardMedia
-                component="img"
-                height="300"
-                image={studentBackground}
-                alt="Manage Students"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Student Management
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Add or manage student profiles.
-                </Typography>
-                </CardContent>
-            </CardActionArea>
-            </Card>
-        </Grid>
-        <Grid item xs={4} sm={4} md={4}>
-            <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea onClick={() => navigate('/Instructori')}>
-                <CardMedia
-                component="img"
-                image={instructorBackground}
-                height="300"
-                alt="Manage Instructors"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Instructor Management
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Add or manage instructor details.
-                </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActionArea onClick={() => navigate('/Instructori')}>
-            </CardActionArea>
-            </Card>
-        </Grid>
-        <Grid item xs={4} sm={4} md={4}>
-            <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea onClick={() => navigate('/Receipts')}>
-                <CardMedia
-                component="img"
-                image={receiptBackground}
-                height="300"
-                alt="Manage Receipts"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Receipt Management
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Add or manage receipt details.
-                </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActionArea onClick={() => navigate('/Receipts')}>
-            </CardActionArea>
-        </Card>
-      </Grid>
-    </Grid>
-    </div>
-  );
-};
-
+    
 export default DashboardAdmin;
