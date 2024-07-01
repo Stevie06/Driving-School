@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../client';
-import { Button, TextField, Typography, Box, Snackbar, Alert, Container } from '@mui/material';
+import { Button, TextField, Typography, Box, Snackbar, Alert, Container, Paper,Icon } from '@mui/material';
 import TopBar from '../components/TopBar';
-
+import AddIcon from '@mui/icons-material/Add';
 const ChangePassword = () => {
     const [passwords, setPasswords] = useState({
         oldPassword: '',
@@ -41,31 +41,24 @@ const ChangePassword = () => {
     };
 
     return (
-        <div>
+        <Box>
         <TopBar/>
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'center', alignItems: 'center' }}> 
-            <Container component="main" maxWidth="xs">
-                <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        p: 3,
-                        m: 1,
-                        bgcolor: 'background.paper',
-                        boxShadow: 3,
-                        borderRadius: 1
-                    }}
-                >
-                    <Typography variant="h6">Change Password</Typography>
+            <Container component="main" maxWidth="xs" sx={{ paddingTop: 5 }}>
+            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3,mt:3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
+                    <Icon sx={{ color: '#FFD700', mr: 1 }}>
+                        <AddIcon/>
+                    </Icon>
+                    <Typography variant="h6">Schimba parola</Typography>
+                </Box>
+            </Paper>
+                <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
                     <TextField
                         margin="normal"
                         required
                         fullWidth
                         name="oldPassword"
-                        label="Old Password"
+                        label="Parola veche"
                         type="password"
                         value={passwords.oldPassword}
                         onChange={handleChange}
@@ -76,7 +69,7 @@ const ChangePassword = () => {
                         required
                         fullWidth
                         name="newPassword"
-                        label="New Password"
+                        label="Parola noua"
                         type="password"
                         value={passwords.newPassword}
                         onChange={handleChange}
@@ -87,24 +80,23 @@ const ChangePassword = () => {
                         required
                         fullWidth
                         name="confirmPassword"
-                        label="Confirm New Password"
+                        label="Confirma parola"
                         type="password"
                         value={passwords.confirmPassword}
                         onChange={handleChange}
                         autoComplete="new-password"
                     />
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                        Update Password
+                        Actualizeaza parola
                     </Button>
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
                             {message}
                         </Alert>
                     </Snackbar>
-                </Box>
+                </Paper>
             </Container>
-        </div>
-        </div>
+        </Box>
     );
 };
 

@@ -1,42 +1,47 @@
 import React from 'react';
 import { Box, Typography, Paper, Container } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import TopBar from '../components/TopBar';
 
 const AboutUs = () => {
-    const position = [51.505, -0.09]; // Replace with your company's coordinates
+    const position = [45.45249,28.03545]; 
 
     return (
+        <Box>
+        <TopBar/>
         <Container maxWidth="lg">
-            <Typography variant="h4" component="h1" gutterBottom>
-                About Us
+            <Typography variant="h4" component="h1" gutterBottom paddingTop={2}>
+                Despre noi
             </Typography>
             <Paper elevation={3} sx={{ padding: 3, marginBottom: 2 }}>
                 <Typography variant="h6" component="h2">
-                    Our Story
+                    ȘCOALA AUTO ADELANTE
                 </Typography>
                 <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Cu o tradiție de peste 20 de ani școala Auto „Adelante” vei învață regulile de circulație, tehnicile de conducere și caracteristicile vehiculului, dar și despre siguranță la volan și respectarea mediului.
                 </Typography>
                 <Typography paragraph>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Fie că este vorba de categoria B, C, CE, D te vom îndruma pentru a atinge scopul final cu succes, carnetul auto
                 </Typography>
             </Paper>
             <Paper elevation={3} sx={{ padding: 3 }}>
                 <Typography variant="h6" component="h2">
-                    Contact Information
+                    Informatii contact
                 </Typography>
                 <Typography paragraph>
-                    Email: contact@ourcompany.com
+                    Email: adelante@yahoo.com
                 </Typography>
                 <Typography paragraph>
-                    Phone: +1234567890
+                    Contact Telefonic:
+                    0770201553 / 0744804946
                 </Typography>
                 <Typography paragraph>
-                    Address: 1234 Street, City, Country
+                    Bulevardul George Coșbuc 292,
+                    Galați 800552
                 </Typography>
             </Paper>
-            <Box sx={{ height: 400, marginTop: 2 }}>
-                <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+            <Box sx={{ height: 300,width:800, marginTop: 2 }}>
+                <MapContainer center={position} zoom={17} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -49,6 +54,7 @@ const AboutUs = () => {
                 </MapContainer>
             </Box>
         </Container>
+    </Box>
     );
 };
 

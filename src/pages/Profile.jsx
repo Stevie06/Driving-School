@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 import { supabase } from '../client';
 import TopBar from '../components/TopBar';
 
 const Profile = () => {
+
+  const user = supabase.auth.getUser();
   const [profile, setProfile] = useState({
     username: '',
     email: '',
@@ -16,7 +18,6 @@ const Profile = () => {
   }, []);
 
   const fetchProfile = async () => {
-    const user = supabase.auth.user();
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -36,15 +37,17 @@ const Profile = () => {
     const { data, error } = await supabase
       .from('users')
       .update({ ...profile })
-      .eq('id', supabase.auth.user().id);
+      .eq('id', supabase.auth.getUser().id);
 
     if (error) console.error('Error updating profile', error);
     else alert('Profile updated successfully!');
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
-      <TopBar />
+    <Box>
+    <TopBar />
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 10,alignItems: 'center', justifyContent: 'center' }}>
+      <Paper elevation={3} sx={{ padding: '1rem', width: '500px', marginLeft: 'auto', marginRight: 'auto',paddingTop: '2rem' }}>
       <Typography variant="h6">Edit Profile</Typography>
       <TextField
         fullWidth
@@ -73,6 +76,8 @@ const Profile = () => {
       <Button type="submit" variant="contained" color="primary">
         Save Changes
       </Button>
+    </Paper>
+    </Box>
     </Box>
   );
 };

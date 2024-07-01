@@ -10,15 +10,9 @@ const Studenti = () => {
     return (
         <div>
             <TopBar />
-            <Grid paddingTop={2}>
-                <Grid container justifyContent="center">
-                    <Grid item xs={12} sm={8} md={6} lg={4}>
-                        <Paper elevation={3} sx={{ padding: 4, margin: 2, width: '500px' }}>
-                            <AddStudent />
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Grid>
+            <Container>
+                <AddStudent />
+            </Container>
         </div>
     );
 };

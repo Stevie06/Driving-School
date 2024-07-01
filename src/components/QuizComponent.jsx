@@ -1,137 +1,189 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Card, CardContent, CardMedia, Typography, FormControlLabel, Radio, RadioGroup, CircularProgress, Snackbar, Alert } from '@mui/material';
-import { LocalizationProvider  } from '@mui/x-date-pickers';
+import { Box, Button, Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, CircularProgress, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { supabase } from '../client'; 
-const QuizComponent = () => {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../client';
+import TopBar from './TopBar';
 
-  useEffect(() => {
+const QuizComponent = () => {
+    const [questions, setQuestions] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedOption, setSelectedOption] = useState('');
+    const [correctAnswers, setCorrectAnswers] = useState(0);
+    const [incorrectAnswers, setIncorrectAnswers] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogContent, setDialogContent] = useState('');
+    const [timeRemaining, setTimeRemaining] = useState(1800); 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchQuestions();
+        const timer = setInterval(() => {
+            setTimeRemaining(prevTime => prevTime > 0 ? prevTime - 1 : 0);
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        if (timeRemaining === 0) {
+            endQuiz(false, "Timpul a expirat!");
+        }
+    }, [timeRemaining]);
+
     const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('questions')
-          .select('question, correct_answer');
-        if (error) throw error;
-        setQuestions(data);
-      } catch (error) {
-        console.error('Error fetching questions:', error.message);
-        setError(error.message);
-      }
-      setLoading(false);
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('questions')
+                .select('*')
+                .limit(26);
+            if (error) throw error;
+            setQuestions(data);
+        } catch (error) {
+            console.error('Error fetching questions:', error.message);
+        }
+        setLoading(false);
     };
 
-    fetchQuestions();
-  }, []);
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+    const handleNextQuestion = async () => {
+        processAnswer(selectedOption === questions[currentQuestionIndex].correct_answer.toLowerCase());
+        moveToNextQuestion();
+    };
 
-  const handleNextQuestion = () => {
-    if (selectedOption === questions[currentQuestionIndex].correctAnswer) {
-      setCorrectAnswers(correctAnswers + 1);
-    } else {
-      const newIncorrectCount = incorrectAnswers + 1;
-      setIncorrectAnswers(newIncorrectCount);
-      if (newIncorrectCount > 4) {
-        setOpenSnackbar(true);
-        setSnackbarMessage('You have failed the exam.');
-        return; 
-      }
-    }
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption('');
-    } else {
-      setOpenSnackbar(true);
-      setSnackbarMessage('You have completed the quiz.');
-    }
-  };
-
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <Typography color="error">Failed to load questions: {error}</Typography>;
-  }
-
-  const currentQuestion = questions[currentQuestionIndex];
-  const questionsRemaining = questions.length - currentQuestionIndex - 1;
-
-  const recordQuizAttempt = async (userId, score, totalQuestions, remarks) => {
-    const { error } = await supabase
-      .from('quiz_history')
-      .insert([
-        {
-          student_id: userId,
-          score: score,
-          total_questions: totalQuestions,
-          remarks: remarks
+    const processAnswer = (isCorrect) => {
+        if (isCorrect) {
+            setCorrectAnswers(correctAnswers + 1);
+        } else {
+            setIncorrectAnswers(incorrectAnswers + 1);
+            if (incorrectAnswers > 4) {
+                endQuiz(false,'Ati fost respins' );
+                return;
+            }
         }
-      ]);
-  
-    if (error) {
-      console.error('Error recording quiz attempt:', error.message);
-      return false;
-    }
-    return true;
-  };
-  
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ width: '100%', p: 2 }}>
-        <Card raised sx={{ mb: 4 }}>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Question #{currentQuestionIndex + 1}
-            </Typography>
-            <Typography>{currentQuestion.question}</Typography>
+    };
+
+    const moveToNextQuestion = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setSelectedOption('');
+        } else {
+            endQuiz(true,'Ati fost admis!');
             
-            <RadioGroup
-              name="quiz-options"
-              value={selectedOption}
-              onChange={handleOptionChange}
-            >
-              {currentQuestion.options?.map((option) => (
-                <FormControlLabel key={option.id} value={option.id} control={<Radio />} label={option.text} />
-              ))}
-            </RadioGroup>
-          </CardContent>
-        </Card>
-        <Button
-          variant="contained"
-          onClick={handleNextQuestion}
-          disabled={!selectedOption}
-        >
-          Next
-        </Button>
-        <Typography sx={{ mt: 2 }}>
-          Questions Remaining: {questionsRemaining}
-          <br />
-          Correct Answers: {correctAnswers}
-          <br />
-          Incorrect Answers: {incorrectAnswers}
-        </Typography>
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-          <Alert onClose={() => setOpenSnackbar(false)} severity="info" sx={{ width: '100%' }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-      </Box>
-    </LocalizationProvider>
-  );
+        }
+    };
+
+    const endQuiz = async (completed, message, status) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            console.error('User-ul nu este autentificat');
+            return;
+        }
+
+        const totalQuestions = correctAnswers + incorrectAnswers;
+        await recordQuizAttempt(user.id, correctAnswers, totalQuestions, message);
+        setDialogContent(message);
+        setDialogOpen(true);
+    };
+
+    const recordQuizAttempt = async (studentId, correct_answers, total_questions, status) => {
+        const { error } = await supabase
+            .from('quiz_history')
+            .insert([
+                {
+                    student_id: studentId,
+                    correct_answers,
+                    total_questions,
+                    status: status
+                }
+            ]);
+        if (error) {
+            console.error('Error recording quiz attempt:', error.message);
+        }
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        navigate('/Dashboardstud');
+    };
+
+    if (loading) {
+        return <CircularProgress />;
+    }
+
+    const currentQuestion = questions[currentQuestionIndex];
+    const formatTime = () => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
+
+    return (
+        <div>
+            <TopBar />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1500px', margin: '0 auto' }}>
+                    <Card raised sx={{ mb: 4, width: '100%', alignItems: 'center' }}>
+                        <CardContent>
+                            <Typography sx={{ fontSize: '1.2rem' }}>Timp ramas: {formatTime()}</Typography>
+                            <Typography sx={{ fontSize: '1.2rem', textAlign:'end' }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
+                            Intrebari Corecte: {correctAnswers} <br />
+                            Intrebari Gresite: {incorrectAnswers} <br />
+                            </Typography>
+                            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 2, padding: 2 }}>
+                                Intrebarea {currentQuestionIndex + 1} din {questions.length}
+                            </Typography>
+                            
+                            <Typography sx={{ fontSize: '1.2rem' }}>{currentQuestion.question}</Typography>
+                            <RadioGroup
+                                name="quiz-options"
+                                value={selectedOption}
+                                onChange={handleOptionChange}
+                            >
+                                <FormControlLabel value="a" control={<Radio />} label={currentQuestion.answer_a} />
+                                <FormControlLabel value="b" control={<Radio />} label={currentQuestion.answer_b} />
+                                <FormControlLabel value="c" control={<Radio />} label={currentQuestion.answer_c} />
+                            </RadioGroup>
+                        </CardContent>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 2 }}>
+                            <Button
+                                variant="outlined"
+                                onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+                                disabled={!selectedOption}
+                                sx={{ mx: 2 }}
+                            >
+                                Urmatoarea intrebare
+                            </Button>
+                            <Button
+                                variant="contained"
+                                onClick={handleNextQuestion}
+                                disabled={!selectedOption}
+                                sx={{ mx: 2 }}
+                            >
+                                Trimite Raspunsul
+                            </Button>
+                        </Box>
+                    </Card>
+                </Box>
+            </LocalizationProvider>
+            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+                <DialogTitle>Quiz Result</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {dialogContent}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 };
 
 export default QuizComponent;

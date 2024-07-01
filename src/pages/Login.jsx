@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
-import { Button, TextField, Typography, Container, Paper, Grid, Link } from '@mui/material';
-
+import { Button, TextField, Typography, Container, Paper, Grid, Link ,InputAdornment,Box, IconButton} from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import road from '../assets/road.jpg';
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -16,7 +17,10 @@ const Login = () => {
             [event.target.name]: event.target.value
         }));
     };
-
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+      };
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -60,8 +64,17 @@ const Login = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-            <Container maxWidth='sm'>
+        <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          backgroundColor: '#f5f5f5', 
+        }}
+      >
+            <Container sx={{ paddingTop: 2 }} maxWidth='sm'>
                 <Paper elevation={3} sx={{ padding: 3 }}>
                     <Typography variant='h3' gutterBottom>
                         Login
@@ -77,6 +90,7 @@ const Login = () => {
                                     variant="standard"
                                     value={formData.email}
                                     onChange={handleChange}
+                                    
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -102,7 +116,7 @@ const Login = () => {
                     </Typography>
                 </Paper>
             </Container>
-        </div>
+        </Box>
     );
 }
 

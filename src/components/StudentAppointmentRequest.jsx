@@ -3,6 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, StaticDateTimePicker } from '@mui/x-date-pickers';
 import { Button, Snackbar, Alert, TextField, Paper, Typography, Box, Icon } from '@mui/material';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import Programeaza from '../assets/Programeaza.jpg';
 import { supabase } from '../client';
 import dayjs from 'dayjs';
 
@@ -12,10 +13,14 @@ function StudentAppointmentRequest() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [instructorId, setInstructorId] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [studentid, setStudentId] = useState(null);
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const { data: user, error: userError } = await supabase.auth.getUser();
+      const { data: {user}, error: userError } = await supabase.auth.getUser();
+
+      if(user) {
+        setStudentId(user.id);
+      }
       if (userError) {
         console.error('Error fetching user data:', userError);
         setSnackbarMessage("User not authenticated.");
@@ -23,14 +28,11 @@ function StudentAppointmentRequest() {
         setLoading(false);
         return;
       }
-
-      if (user) {
         const { data, error } = await supabase
           .from('users')
           .select('instructorid')
           .eq('id', user.id)
-          
-
+          .single();
         if (error) {
           console.error('Error fetching instructor ID:', error);
           setSnackbarMessage(`Error fetching instructor: ${error.message}`);
@@ -41,7 +43,7 @@ function StudentAppointmentRequest() {
           setSnackbarMessage("Instructor not assigned.");
           setOpenSnackbar(true);
         }
-      }
+      
       setLoading(false);
     };
 
@@ -55,15 +57,15 @@ function StudentAppointmentRequest() {
       return;
     }
 
-    const formattedDate = selectedDate.format('YYYY-MM-DD HH:mm:ss');
+    const formattedDate = selectedDate.format('YYYY-MM-DD'-'HH:mm');
     const { error } = await supabase
       .from('appointments')
       .insert([
         {
           session_date: formattedDate,
-          studentid: user.id, 
+          studentid: studentid, 
           instructorid: instructorId,
-          status: 'pending'
+          status: 'In asteptare'
         }
       ]);
 
@@ -71,20 +73,27 @@ function StudentAppointmentRequest() {
       setSnackbarMessage(`Error: ${error.message}`);
       setOpenSnackbar(true);
     } else {
-      setSnackbarMessage('Appointment requested successfully!');
+      setSnackbarMessage('Cerere trimisa cu succes!');
       setOpenSnackbar(true);
     }
   };
 
   return (
     <div>
-      <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
+      <Paper elevation={3} sx={{
+      bgcolor: '#f5f5f5',
+      p: 2,
+      mb: 3,
+      backgroundImage: `url(${Programeaza})`,
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center' 
+    }}>
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
           <Icon sx={{ color: '#FFD700', mr: 1 }}>
             <EventAvailableIcon />
           </Icon>
           <Typography variant="h6" component="h2">
-            Schedule Your Appointment
+            Programeaza o sesiune de condus
           </Typography>
         </Box>
       </Paper>
@@ -112,7 +121,7 @@ function StudentAppointmentRequest() {
                   }}
                 />
                 <Button variant="contained" onClick={handleRequestSubmit} sx={{ mt: 2 }}>
-                  Request Appointment
+                  Trimite cererea
                 </Button>
                 <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
                   <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>

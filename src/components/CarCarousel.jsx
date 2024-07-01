@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardMedia, Typography, IconButton, Button } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import supabase from '../client';
-import AddCar from './AddCar';
 
 const CarCarousel = () => {
     const [cars, setCars] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
         fetchCars();
     }, []);
 
     const fetchCars = async () => {
-        const { data, error } = await supabase
-        .from('cars')
-        .select('*');
-        if (error) console.error('Error fetching cars:', error);
-        setCars(data);
+        const { data: carsData, error } = await supabase
+            .from('cars')
+            .select('*');
+        if (error) {
+            console.error('Error fetching cars:', error);
+            return;
+        }
+
+        const carsWithImages = await Promise.all(carsData.map(async car => {
+            const { publicURL, error: urlError } = supabase
+                .storage
+                .from('cars-images')
+                .getPublicUrl(car.image_url);
+
+            if (urlError) {
+                console.error('Error fetching car image:', urlError);
+                return { ...car, imageURL: '/path/to/default/image.jpg' };  
+            }
+
+            return { ...car, imageURL: publicURL };
+        }));
+
+        setCars(carsWithImages);
     };
+
     return (
         <div>
             {cars.length > 0 && (
@@ -28,16 +45,16 @@ const CarCarousel = () => {
                         component="img"
                         height="140"
                         image={cars[activeIndex].imageURL}
-                        alt="Car image"
+                        alt={`Image of ${cars[activeIndex].make} ${cars[activeIndex].model}`}
                     />
                     <CardContent>
                         <Typography variant="h5" component="div">
                             {cars[activeIndex].make} {cars[activeIndex].model}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Year: {cars[activeIndex].year}
+                            An fabricatie: {cars[activeIndex].year}
                             <br />
-                            Kilometers: {cars[activeIndex].kilometers}
+                            Kilometri: {cars[activeIndex].kilometers}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             Instructor: {cars[activeIndex].instructor_id}

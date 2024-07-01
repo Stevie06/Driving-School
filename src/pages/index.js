@@ -10,4 +10,10 @@ import Receipts from './Receipts';
 import Programari from './Programari';
 import Sesiune_condus from './Sesiune_condus';
 import Profile from './Profile';
-export {Login,SignUp,DashboardInst,Studenti,Programari,Sesiune_condus,Instructori,ChangePassword,Profile,DashboardAdmin,DashboardStud,Receipts}
+import Masina from './Masina';
+import Quiz from './Quiz';
+import AboutUs from './AboutUs';
+import 'leaflet/dist/leaflet.css';
+import Receipts_Admin from './Receipts_Admin';
+import Reports from './Reports';
+export {Login,SignUp,DashboardInst,AboutUs,Studenti,Quiz,Programari,Sesiune_condus,Instructori,Masina,ChangePassword,Profile,DashboardAdmin,DashboardStud,Receipts,Receipts_Admin,Reports}

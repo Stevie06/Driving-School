@@ -6,8 +6,10 @@ import SessionForm from '../components/SessionForm';
 import StudentsTable from '../components/StudentsTable';
 import StudentAppointmentRequest from '../components/StudentAppointmentRequest';
 import ManageAppointments from '../components/ManageAppointments';
-import { Upcoming } from '@mui/icons-material';
+import { Quiz, Upcoming } from '@mui/icons-material';
 import UpcomingSessions from '../components/UpcomingSessions';
+import QuizHistory from '../components/QuizHistory';
+import Banner from '../components/Banner';
 
 const DashboardInst = ({ token }) => {
   const instructorId = token;
@@ -16,6 +18,8 @@ const DashboardInst = ({ token }) => {
     <Box>
       <div>
         <TopBar />
+        <Banner
+          />
         <Container sx={{ display: 'flex', paddingTop: '64px', height: 'calc(100vh - 64px)', alignItems: 'stretch' }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>

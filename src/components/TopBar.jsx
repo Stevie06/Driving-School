@@ -29,7 +29,7 @@ const TopBar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: 'gray' }}>
+    <AppBar position="static" sx={{ bgcolor: 'gray' ,marginBottom:'20px'}}>
       <Toolbar>
         <IconButton
           size="large"
@@ -51,7 +51,7 @@ const TopBar = () => {
           <MenuItems/>
         </Drawer>
         <IconButton onClick={handleMenu} size="large" sx={{ p: 0 }}>
-          <Avatar alt="User" /> {/* Consider adding a src attribute if user images are available */}
+          <Avatar alt="User" /> 
         </IconButton>
         <Menu
           id="menu-appbar"

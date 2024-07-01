@@ -8,6 +8,9 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import StudentsTable from '../components/StudentsTable';
 import CarCarousel from '../components/CarCarousel';
+import AddCar from '../components/AddCar';
+import Banner from '../components/Banner';
+import AdminBanner from '../assets/instructor-background.jpg';
 
 const DashboardAdmin = () => {
         
@@ -44,19 +47,19 @@ const DashboardAdmin = () => {
         }, []);
         const cardData = [
             {
-                title: "Students",
+                title: "Studenti",
                 value: stats.students,
                 icon: <SchoolIcon />,
                 bgcolor: '#f5f5f5'
             },
             {
-                title: "Instructors",
+                title: "Instructori",
                 value: stats.instructors,
                 icon: <SupervisorAccountIcon />,
                 bgcolor: "#e3f2fd"
             },
             {
-                title: "Cars",
+                title: "Masini",
                 value: stats.cars,
                 icon: <DirectionsCarIcon />,
                 bgcolor: '#f5f5f5'
@@ -67,7 +70,7 @@ const DashboardAdmin = () => {
             <Box>
             <Grid >
                 <TopBar/>
-                <Grid container spacing={4} paddingX={6} paddingTop={4} >
+                <Grid container spacing={4} paddingX={3} paddingTop={8} >
                     {cardData.map((card, index) => (
                         <Grid item xs={12} sm={4} key={index}>
                             <Card sx={{ display: 'flex', bgcolor: card.bgcolor, height: '100%' }}>
@@ -88,11 +91,8 @@ const DashboardAdmin = () => {
                     ))}
                 </Grid>
                 <Grid container spacing={2} columnGap={5} paddingTop={10} paddingX={5} alignItems="flex-start"> 
-                    
-                        <StudentsTable/>
-                        <CarCarousel/>
-                    
-                    
+                    <StudentsTable/>
+                    <CarCarousel/>  
                 </Grid>
             </Grid>
         </Box>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import { Container, Grid, Typography, Paper } from "@mui/material";
-import Calendar from "../components/Calendar";
 
 const Programari = () => {
     const navigate = useNavigate();

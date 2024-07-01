@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../client';
-import { Button, TextField, Box, Typography, MenuItem, FormControl, InputLabel, Select, Snackbar, Alert, Grid } from '@mui/material';
-
+import { Button, TextField, Box, Typography, MenuItem, FormControl, InputLabel, Select, Snackbar, Alert, Grid, Paper,Icon } from '@mui/material';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+const getLocalDateTime = () => {
+    const now = new Date();
+}
 const AddReceipt = () => {
     const [receipt, setReceipt] = useState({
         student_id: '',
         amount: '',
         description: '',
-        notes: ''
+        date: getLocalDateTime(),
     });
     const [users, setUsers] = useState([]);
     const [open, setOpen] = useState(false);
@@ -53,10 +56,18 @@ const AddReceipt = () => {
     
 
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 6,width:500 }}>
-            <Grid container spacing={2}>
-            <Typography variant="h6">Add New Receipt</Typography>
-            <FormControl fullWidth margin="normal">
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1,width: 450 }}>
+            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3,width: 450 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
+                    <Icon sx={{ color: '#FFD700', mr: 1 }}>
+                        <ReceiptIcon/>
+                    </Icon>
+                    <Typography variant="h6">Adauga chitanta noua</Typography>
+                </Box>
+            </Paper>
+            
+        <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3,width: 450 }}>
+            <FormControl fullWidth margin="normal" >
                 <InputLabel id="student-label">Student</InputLabel>
                 <Select
                     labelId="student-label"
@@ -74,35 +85,42 @@ const AddReceipt = () => {
             </FormControl>
             <TextField
                 fullWidth
-                label="Amount"
+                label="Suma"
                 name="amount"
                 type="number"
                 value={receipt.amount}
                 onChange={handleChange}
                 variant='outlined'
-            />
-            <InputLabel id="description-label">Tip plata</InputLabel>
-            <Select
+                sx={{ mt: 2 }}
+            />  
+            <TextField 
                 fullWidth
-                labelId="description-label"
+                label="Descriere"
                 name="description"
+                type="text"
                 value={receipt.description}
-                label="Description"
                 onChange={handleChange}
                 variant='outlined'
-                >
-                <MenuItem value='Plata partiala'>Plata partiala</MenuItem>
-               <MenuItem value='Plata totala'>Plata totala</MenuItem>
-            </Select>
+                sx={{ mt: 2 }}
+            />
+            <TextField
+                fullWidth
+                name="date"
+                type="date"
+                value={receipt.date}
+                onChange={handleChange}
+                variant='outlined'
+                sx={{ mt: 2 }}
+            />
             <Button type="submit" color="primary" variant="contained" sx={{ mt: 2 }}>
-                Submit
+                Adauga
             </Button>
-            </Grid>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" variant="filled" elevation={6} sx={{ width: '100%' }}>
-                    Student added successfully!
+                    Chitanta adaugata cu succes!
                 </Alert>
             </Snackbar>
+            </Paper>
         </Box>
     );
 };

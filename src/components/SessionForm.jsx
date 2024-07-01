@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../client';
-import { Button, TextField, Typography, Box, FormControl, InputLabel, Select, MenuItem, Paper,Icon } from '@mui/material';
+import { Button, TextField, Box, Typography, FormControl, InputLabel, Select, MenuItem, Paper, Icon ,Snackbar, Alert} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+
+
+const getLocalDateTime = () => {
+    const now = new Date();
+    const localTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString();
+    return localTime.slice(0, 16);
+};
+const initialSessionData = {
+    student_id: '',
+    date: getLocalDateTime(),
+    duration: '',
+    kilometers_start: '',
+    kilometers_end: '',
+    notes_student: '',
+    notes_instructor: ''
+};
+
 const SessionForm = ({ onSuccess }) => {
-    const getLocalDateTime = () => {
-        const now = new Date();
-        const localTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString();
-        return localTime.slice(0, 16);
-    };
-    const [sessionData, setSessionData] = useState({ 
-        student_id: '',
-        date: getLocalDateTime(),
-        duration: '',
-        kilometers_start: '',
-        kilometers_end: '',
-        notes_student: '',
-        notes_instructor: ''
-    });
+    const [sessionData, setSessionData] = useState(initialSessionData);
     const [students, setStudents] = useState([]);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         fetchStudents();
@@ -53,7 +58,8 @@ const SessionForm = ({ onSuccess }) => {
         if (error) {
             alert('Error adding session: ' + error.message);
         } else {
-            alert('Session added successfully!');
+            setSnackbarMessage('Sesiune adaugata cu succes!');
+            setSessionData(initialSessionData); 
             if (onSuccess) onSuccess();
         }
     };
@@ -65,7 +71,7 @@ const SessionForm = ({ onSuccess }) => {
                         <Icon sx={{ color: '#FFD700', mr: 1 }}>
                             <AddIcon/>
                         </Icon>
-                        <Typography variant="h6">Add Driving Session</Typography>
+                        <Typography variant="h6">Adauga sesiune de condus</Typography>
                     </Box>
                 </Paper>
                 <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
@@ -89,7 +95,7 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="date"
-                    label="Session Date"
+                    label="Data"
                     type="datetime-local"
                     value={sessionData.date}
                     onChange={handleChange}
@@ -100,7 +106,7 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="duration"
-                    label="Duration (in minutes)"
+                    label="Durata (in minute)"
                     type="number"
                     value={sessionData.duration}
                     onChange={handleChange}
@@ -110,7 +116,7 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="kilometers_start"
-                    label="Kilometers Start"
+                    label="Kilometeri Start"
                     type="number"
                     value={sessionData.kilometers_start}
                     onChange={handleChange}
@@ -120,7 +126,7 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="kilometers_end"
-                    label="Kilometers End"
+                    label="Kilometeri Sfarsit"
                     type="number"
                     value={sessionData.kilometers_end}
                     onChange={handleChange}
@@ -130,7 +136,7 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="notes_instructor"
-                    label="Notes Instructor"
+                    label="Note Instructor"
                     multiline
                     rows={4}
                     value={sessionData.notes_instructor}
@@ -141,15 +147,20 @@ const SessionForm = ({ onSuccess }) => {
                     fullWidth
                     required
                     name="notes_student"
-                    label="Notes Student"
+                    label="Note Student"
                     multiline
                     rows={4}
                     value={sessionData.notes_student}
                     onChange={handleChange}
                 />
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb:2 }}>
-                    Submit
+                    Adauga
                 </Button>
+                <Snackbar open={!!snackbarMessage} autoHideDuration={6000} onClose={() => setSnackbarMessage('')}>
+                    <Alert onClose={() => setSnackbarMessage('Student adaugat cu succes!')} severity="success" variant="filled" elevation={6} sx={{ width: '100%' }}>
+                        {snackbarMessage}
+                    </Alert>
+                </Snackbar>
                 </Paper>
             </Box>
     );
