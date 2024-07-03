@@ -70,10 +70,6 @@ const TopBar = () => {
         >
           <MenuItem onClick={() => {
             handleClose();
-            navigate('/Profile');
-          }}>Editeaza Profil</MenuItem>
-          <MenuItem onClick={() => {
-            handleClose();
             navigate('/ChangePassword');
           }}>Schimba parola</MenuItem>
           <MenuItem onClick={() => {
