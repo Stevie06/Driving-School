@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { SignUp, Login, DashboardInst,Masina, Studenti,Instructori,AboutUs,Profile,DashboardAdmin,DashboardStud,ChangePassword,Receipts,Sesiune_condus,Programari,Quiz,Receipts_Admin,Reports } from './pages';
+import { SignUp, Login, DashboardInst,Masina, Studenti,Instructori,AboutUs,Profile,DashboardAdmin,DashboardStud,ChangePassword,Receipts,Sesiune_condus,Programari,Quiz,Receipts_Admin,Reports, Review } from './pages';
 
 
 const App = () => {
@@ -39,9 +39,8 @@ const App = () => {
         <Route path='/AboutUs' element={<AboutUs token={token} />} />
         <Route path='/Reports' element={<Reports token={token} />} />
         <Route path='/Receipts_Admin' element={<Receipts_Admin token={token} />} />
-
+        <Route path='/Review' element={<Review token={token} />} />
       </Routes>
-
     </div>
   );
 }

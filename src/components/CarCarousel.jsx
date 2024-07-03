@@ -19,8 +19,9 @@ const CarCarousel = () => {
             console.error('Error fetching cars:', error);
             return;
         }
+        
 
-        const carsWithImages = await Promise.all(carsData.map(async car => {
+    const carsWithImages = await Promise.all(carsData.map(async car => {
             const { publicURL, error: urlError } = supabase
                 .storage
                 .from('cars-images')
@@ -33,18 +34,18 @@ const CarCarousel = () => {
 
             return { ...car, imageURL: publicURL };
         }));
-
+         
         setCars(carsWithImages);
     };
 
     return (
         <div>
             {cars.length > 0 && (
-                <Card sx={{ width: 400, height: 330}}>
+                <Card sx={{ width: 500, height: 400}}>
                     <CardMedia
                         component="img"
-                        height="140"
-                        image={cars[activeIndex].imageURL}
+                        height="215"
+                        image={cars[activeIndex].photo_url}
                         alt={`Image of ${cars[activeIndex].make} ${cars[activeIndex].model}`}
                     />
                     <CardContent>

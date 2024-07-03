@@ -9,6 +9,7 @@ import Person from '@mui/icons-material/Person';
 import  InfoIcon from '@mui/icons-material/Info';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import { supabase } from '../client'; 
 function MenuItems() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function MenuItems() {
     { text: 'Facturi', path: '/Receipts', Icon: ReceiptIcon, color: 'gray', roles: ['user'] },
     { text: 'Facturi', path: '/Receipts_Admin', Icon: ReceiptIcon, color: 'gray', roles: ['admin', 'instructor'] },
     { text: 'Rapoarte', path: '/Reports', Icon: BarChartIcon, color: 'gray', roles: ['admin'] },
+    { text: 'Recenzii', path: '/Review', Icon: ReviewsIcon, color: 'gray', roles: [ 'user'] },
     { text: 'Despre noi', path: '/AboutUs', Icon: InfoIcon, color: 'gray', roles: ['admin', 'instructor', 'user'] },
   ];
 

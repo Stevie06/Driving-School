@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Snackbar, Alert, Paper, Typography, Icon } from '@mui/material';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { supabase } from '../client';
-import DirectionsCar from '@mui/icons-material/DirectionsCar';
 
 const AddCar = () => {
     const [carData, setCarData] = useState({
@@ -10,6 +10,7 @@ const AddCar = () => {
         year: '',
         kilometers: '',
         instructor_id: '',
+        photo_url: ''  
     });
     const [instructors, setInstructors] = useState([]);
     const [imageFile, setImageFile] = useState(null);
@@ -31,142 +32,83 @@ const AddCar = () => {
         fetchInstructors();
     }, []);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setCarData({ ...carData, [name]: value });
-    };
-
     const handleFileChange = (event) => {
         setImageFile(event.target.files[0]);
     };
 
     const handleUpload = async () => {
-        if (!imageFile) return null;
+        if (!imageFile) return;
         const fileExt = imageFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
-        const { data, error } = await supabase.storage
+        const fileName = `${Math.random()}.${fileExt}`;
+        const { error, data } = await supabase.storage
             .from('car-images')
             .upload(fileName, imageFile);
 
         if (error) {
             console.error('Error uploading image:', error);
-            return null;
-        } else {
-            return data.Key; 
+            return;
         }
+
+        const { publicURL } = supabase.storage
+            .from('car-images')
+            .getPublicUrl(data.Key);
+
+        return publicURL;
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const photoKey = await handleUpload();
-        if (photoKey) {
-            carData.photo_url = photoKey;
+        const photo_url = await handleUpload();
+        if (photo_url) {
+            carData.photo_url = photo_url;
         }
-        const { data, error } = await supabase
+
+        const { error } = await supabase
             .from('cars')
             .insert([carData]);
+
         if (error) {
-            console.error('Error saving car:', error);
-            setSnackbar({ open: true, message: 'Failed to save car!', severity: 'error' });
+            console.error('Error adding car:', error);
+            setSnackbar({ open: true, message: 'Failed to add car!', severity: 'error' });
         } else {
-            console.log('Car added successfully!', data);
             setSnackbar({ open: true, message: 'Car added successfully!', severity: 'success' });
+            setCarData({ make: '', model: '', year: '', kilometers: '', instructor_id: '', photo_url: '' });  
         }
     };
 
     return (
-        <div>
         <Box sx={{ p: 3, borderRadius: 2 , width: 800, margin: 'auto', marginTop: 5}}>
-            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
-                        <Icon sx={{ color: '#FFD700', mr: 1 }}>
-                            <DirectionsCar/>
-                        </Icon>
-                        <Typography variant="h6">Adauga masina</Typography>
-                    </Box>
-            </Paper> 
-            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
-            <TextField
-                autoFocus
-                margin='dense'
-                name="make"
-                label="Marca"
-                variant='outlined'
-                value={carData.make}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                margin='dense'
-                name="model"
-                label="Model"
-                variant='outlined'
-                value={carData.model}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                margin='dense'
-                name="year"
-                label="An fabricatie"
-                type="number"
-                variant='outlined'
-                value={carData.year}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                margin='dense'
-                name="kilometers"
-                label="Kilometri"
-                type="number"
-                variant='outlined'
-                value={carData.kilometers}
-                onChange={handleChange}
-                fullWidth
-            />
-            <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="raised-button-file"
-                multiple
-                type="file"
-                onChange={handleFileChange}
-            />
-            <FormControl fullWidth>
-                <InputLabel>Instructor</InputLabel>
-                <Select
-                    name="instructor_id"
-                    value={carData.instructor_id}
-                    label="Instructor"
-                    onChange={handleChange}
-                >
-                    {instructors.map((instructor) => (
-                        <MenuItem key={instructor.id} value={instructor.id}>
-                            {instructor.username}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <label htmlFor="raised-button-file" >
-                <Button variant="contained" component="span" sx={{ mt: 2 }} >
-                    Incarca poza
-                </Button>
-            </label>
-            
-            <Button type="submit" variant="contained" sx={{ mt: 2 }} onClick={handleSubmit}>
-                Adauga Masina
-            </Button>
+            <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
+                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
+                    <DirectionsCarIcon sx={{ mr: 1, color: '#FFD700' }} />
+                    Adauga Masina
+                </Typography>
+            </Paper>
+            <Paper elevation={3} sx={{ p: 2 }}>
+                <TextField fullWidth label="Make" name="make" value={carData.make} onChange={(e) => setCarData({ ...carData, make: e.target.value })} />
+                <TextField fullWidth label="Model" name="model" value={carData.model} onChange={(e) => setCarData({ ...carData, model: e.target.value })} />
+                <TextField fullWidth label="Year" type="number" name="year" value={carData.year} onChange={(e) => setCarData({ ...carData, year: e.target.value })} />
+                <TextField fullWidth label="Kilometers" type="number" name="kilometers" value={carData.kilometers} onChange={(e) => setCarData({ ...carData, kilometers: e.target.value })} />
+                <FormControl fullWidth>
+                    <InputLabel>Instructor</InputLabel>
+                    <Select name="instructor_id" value={carData.instructor_id} label="Instructor" onChange={(e) => setCarData({ ...carData, instructor_id: e.target.value })}>
+                        {instructors.map((instructor) => (
+                            <MenuItem key={instructor.id} value={instructor.id}>{instructor.username}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <input accept="image/*" type="file" onChange={handleFileChange} style={{ display: 'none' }} id="upload-button" />
+                <label htmlFor="upload-button">
+                    <Button variant="contained" component="span" sx={{ mt: 2 }}>Upload Image</Button>
+                </label>
+                <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>Submit</Button>
+            </Paper>
             {snackbar.open && (
                 <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={() => setSnackbar({ ...snackbar, open: false })}>
-                    <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
-                        {snackbar.message}
-                    </Alert>
+                    <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
                 </Snackbar>
             )}
-        </Paper>
         </Box>
-        </div>
     );
 };
 

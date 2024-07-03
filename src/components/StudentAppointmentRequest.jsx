@@ -83,10 +83,7 @@ function StudentAppointmentRequest() {
       <Paper elevation={3} sx={{
       bgcolor: '#f5f5f5',
       p: 2,
-      mb: 3,
-      backgroundImage: `url(${Programeaza})`,
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center' 
+      mb: 3, 
     }}>
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
           <Icon sx={{ color: '#FFD700', mr: 1 }}>

@@ -16,4 +16,5 @@ import AboutUs from './AboutUs';
 import 'leaflet/dist/leaflet.css';
 import Receipts_Admin from './Receipts_Admin';
 import Reports from './Reports';
-export {Login,SignUp,DashboardInst,AboutUs,Studenti,Quiz,Programari,Sesiune_condus,Instructori,Masina,ChangePassword,Profile,DashboardAdmin,DashboardStud,Receipts,Receipts_Admin,Reports}
+import Review from './Review';
+export {Login,SignUp,DashboardInst,AboutUs,Studenti,Quiz,Programari,Sesiune_condus,Instructori,Masina,ChangePassword,Profile,DashboardAdmin,DashboardStud,Receipts,Receipts_Admin,Reports,Review}
