@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box } from '@mui/material';
 
 const Banner = ({ image, title, description }) => {

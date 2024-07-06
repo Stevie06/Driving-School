@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
 import { Button, TextField, Typography, Container, Paper, Grid, Link ,InputAdornment,Box, IconButton} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
-import road from '../assets/road.jpg';
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -98,7 +97,7 @@ const Login = () => {
                                     fullWidth
                                     type="password"
                                     name="password"
-                                    label="Password"
+                                    label="Parola"
                                     variant="standard"
                                     value={formData.password}
                                     onChange={handleChange}
@@ -112,7 +111,7 @@ const Login = () => {
                         </Grid>
                     </form>
                     <Typography sx={{ mt: 2 }}>
-                        Don't have an account? <Link href='/SignUp'>Sign up</Link>
+                        Nu aveti cont? <Link href='/SignUp'>Inregistrare</Link>
                     </Typography>
                 </Paper>
             </Container>

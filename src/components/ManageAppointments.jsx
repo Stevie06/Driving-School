@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 const ManageAppointments = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [username,setUsername]=useState('');
+
 
     useEffect(() => {
         fetchAppointments();
@@ -22,11 +24,26 @@ const ManageAppointments = () => {
                     .select('*')
                     .eq('instructorid', user.id)
                     .eq('status', 'In asteptare');
+
+
+                
     
                 if (error) {
                     console.error('Error fetching appointments:', error);
                 } else {
                     setAppointments(appointmentsData);
+                }
+                const { data: usernameData, error: usernameError } = await supabase
+                .from('users')
+                .select('username')
+                .eq('id', user.id)
+                .single();
+                if (usernameError) {
+                    console.error('Error fetching username:', usernameError);
+                } else if (usernameData && usernameData.username) {
+                    setUsername(usernameData.username);
+                } else {
+                    setUsername('Niciun utilizator');
                 }
             }
             setLoading(false);
@@ -37,7 +54,7 @@ const ManageAppointments = () => {
                 await handleStatusChange(appointmentId, newStatus);
             }
         };
-    
+        
         const handleStatusChange = async (appointmentId, newStatus) => {
             const { error } = await supabase
                 .from('appointments')

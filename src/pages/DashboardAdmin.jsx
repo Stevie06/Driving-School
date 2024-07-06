@@ -8,11 +8,28 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import StudentsTable from '../components/StudentsTable';
 import CarCarousel from '../components/CarCarousel';
-import AddCar from '../components/AddCar';
 import Banner from '../components/Banner';
-import AdminBanner from '../assets/instructor-background.jpg';
+import morningimage from '../assets/morningimage.jpg';
+import afternoonimage from '../assets/afternoonimage.jpg';
+import eveningimage from '../assets/eveningimage.jpg';
+import nightimage from '../assets/nightimage.jpg';
 
 const DashboardAdmin = () => {
+
+    const getTimeOfDay = () => {
+        const date = new Date();
+        const hours = date.getHours();
+        if (hours >= 5 && hours < 12) {
+          return 'morning';
+        } else if (hours >= 12 && hours < 18) {
+          return 'afternoon';
+        } else if (hours >= 18 && hours < 22) {
+          return 'evening';
+        } else {
+          return 'night';
+        }
+      };
+    
         
         const  [stats, setStats] = useState({
             students: 0,
@@ -70,6 +87,11 @@ const DashboardAdmin = () => {
             <Box>
             <Grid >
                 <TopBar/>
+                <Banner
+                    image={getTimeOfDay() === 'morning' ? morningimage : getTimeOfDay() === 'afternoon' ? afternoonimage : getTimeOfDay() === 'evening' ? eveningimage : nightimage}
+                    title="Bine ai venit!"
+                    description={'Verifica-ti programul, gestioneaza-ti programarile sau adauga sesiuni de condus!'}
+                />
                 <Grid container spacing={4} paddingX={3} paddingTop={8} >
                     {cardData.map((card, index) => (
                         <Grid item xs={12} sm={4} key={index}>

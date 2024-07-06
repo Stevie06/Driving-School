@@ -4,7 +4,7 @@ import TopBar from "../components/TopBar";
 import SessionDurationHistogram from "../components/SessionDurationHistogram";
 import { Grid } from "@mui/material";
 import QuizStatusChart from "../components/QuizStatusChart";
-
+import InstructorRatingsChart from "../components/InstructorRatingsChart";
 const Reports = () => {
     const navigate = useNavigate();
 
@@ -17,6 +17,9 @@ const Reports = () => {
         </Grid>
         <Grid item xs={12} md={6}>
         <QuizStatusChart/>
+        </Grid>
+        <Grid item xs={12} md={6}>
+            <InstructorRatingsChart/>
         </Grid>
         </Grid>
         </div>

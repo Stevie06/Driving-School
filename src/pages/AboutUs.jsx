@@ -41,7 +41,7 @@ const AboutUs = () => {
                 </Typography>
             </Paper>
             <Box sx={{ height: 300,width:800, marginTop: 2 }}>
-                <MapContainer center={position} zoom={17} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+                <MapContainer center={position} zoom={17} scrollWheelZoom={false} style={{ height: "100%", width: "100%" ,justifyContent: 'center', alignItems: 'center'}}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

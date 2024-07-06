@@ -127,19 +127,18 @@ const QuizComponent = () => {
         <div>
             <TopBar />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1500px', margin: '0 auto' }}>
+                <Box sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
                     <Card raised sx={{ mb: 4, width: '100%', alignItems: 'center' }}>
                         <CardContent>
                             <Typography sx={{ fontSize: '1.2rem' }}>Timp ramas: {formatTime()}</Typography>
-                            <Typography sx={{ fontSize: '1.2rem', textAlign:'end' }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
-                            Intrebari Corecte: {correctAnswers} <br />
-                            Intrebari Gresite: {incorrectAnswers} <br />
+                            <Typography sx={{ fontSize: '1rem', textAlign:'end' }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
+                                Intrebari Corecte: {correctAnswers} <br />
+                                Intrebari Gresite: {incorrectAnswers} <br />
                             </Typography>
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 2, padding: 2 }}>
                                 Intrebarea {currentQuestionIndex + 1} din {questions.length}
                             </Typography>
-                            
-                            <Typography sx={{ fontSize: '1.2rem' }}>{currentQuestion.question}</Typography>
+                            <Typography sx={{ fontSize: '1.5rem' }}>{currentQuestion.question}</Typography>
                             <RadioGroup
                                 name="quiz-options"
                                 value={selectedOption}
@@ -150,20 +149,13 @@ const QuizComponent = () => {
                                 <FormControlLabel value="c" control={<Radio />} label={currentQuestion.answer_c} />
                             </RadioGroup>
                         </CardContent>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 2 }}>
-                            <Button
-                                variant="outlined"
-                                onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-                                disabled={!selectedOption}
-                                sx={{ mx: 2 }}
-                            >
-                                Urmatoarea intrebare
-                            </Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: 2 }}>
                             <Button
                                 variant="contained"
+                                color="primary"
                                 onClick={handleNextQuestion}
                                 disabled={!selectedOption}
-                                sx={{ mx: 2 }}
+                                
                             >
                                 Trimite Raspunsul
                             </Button>

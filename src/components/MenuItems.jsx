@@ -10,7 +10,9 @@ import  InfoIcon from '@mui/icons-material/Info';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { supabase } from '../client'; 
+import { DirectionsCar } from '@mui/icons-material';
 function MenuItems() {
   const navigate = useNavigate();
   const [role, setRole] = useState('');
@@ -38,7 +40,7 @@ function MenuItems() {
     { text: 'Acasa', path: '/DashboardStud', Icon: HouseIcon, color: 'gray', roles: ['user']},
     { text: 'Sesiune de condus', path: '/Sesiune_condus', Icon: MenuBookIcon, color: 'gray', roles: ['instructor'] },
     { text: 'Studenti', path: '/Studenti', Icon: Person, color: 'gray', roles: ['admin', 'instructor'] },
-    { text: 'Masina', path: '/Masina', Icon: AccountCircleIcon, color: 'gray', roles: ['admin'] },
+    { text: 'Masina', path: '/Masina', Icon: DirectionsCarIcon, color: 'gray', roles: ['admin'] },
     { text: 'Quiz', path: '/Quiz', Icon: EventNoteIcon, color: 'gray', roles: ['user', 'admin'] },
     { text: 'Facturi', path: '/Receipts', Icon: ReceiptIcon, color: 'gray', roles: ['user'] },
     { text: 'Facturi', path: '/Receipts_Admin', Icon: ReceiptIcon, color: 'gray', roles: ['admin', 'instructor'] },

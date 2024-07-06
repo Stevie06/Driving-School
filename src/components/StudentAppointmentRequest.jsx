@@ -3,7 +3,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, StaticDateTimePicker } from '@mui/x-date-pickers';
 import { Button, Snackbar, Alert, TextField, Paper, Typography, Box, Icon } from '@mui/material';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import Programeaza from '../assets/Programeaza.jpg';
 import { supabase } from '../client';
 import dayjs from 'dayjs';
 

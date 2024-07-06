@@ -77,7 +77,7 @@ const AddCar = () => {
     };
 
     return (
-        <Box sx={{ p: 3, borderRadius: 2 , width: 800, margin: 'auto', marginTop: 5}}>
+        <Box sx={{ p: 3, borderRadius: 2 , width: 700, margin: 'auto', marginTop: 5, display: 'grid'}}>
             <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
                 <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
                     <DirectionsCarIcon sx={{ mr: 1, color: '#FFD700' }} />
@@ -85,11 +85,11 @@ const AddCar = () => {
                 </Typography>
             </Paper>
             <Paper elevation={3} sx={{ p: 2 }}>
-                <TextField fullWidth label="Make" name="make" value={carData.make} onChange={(e) => setCarData({ ...carData, make: e.target.value })} />
-                <TextField fullWidth label="Model" name="model" value={carData.model} onChange={(e) => setCarData({ ...carData, model: e.target.value })} />
-                <TextField fullWidth label="Year" type="number" name="year" value={carData.year} onChange={(e) => setCarData({ ...carData, year: e.target.value })} />
-                <TextField fullWidth label="Kilometers" type="number" name="kilometers" value={carData.kilometers} onChange={(e) => setCarData({ ...carData, kilometers: e.target.value })} />
-                <FormControl fullWidth>
+                <TextField sx={{ mt: 2 }} fullWidth label="Marca" name="make" value={carData.make} onChange={(e) => setCarData({ ...carData, make: e.target.value })} />
+                <TextField sx={{ mt: 2 }} fullWidth label="Model" name="model" value={carData.model} onChange={(e) => setCarData({ ...carData, model: e.target.value })} />
+                <TextField sx={{ mt: 2 }} fullWidth label="An fabricatie" type="number" name="year" value={carData.year} onChange={(e) => setCarData({ ...carData, year: e.target.value })} />
+                <TextField sx={{ mt: 2 }} fullWidth label="Kilometri" type="number" name="kilometers" value={carData.kilometers} onChange={(e) => setCarData({ ...carData, kilometers: e.target.value })} />
+                <FormControl fullWidth sx={{ mt: 2 }} >
                     <InputLabel>Instructor</InputLabel>
                     <Select name="instructor_id" value={carData.instructor_id} label="Instructor" onChange={(e) => setCarData({ ...carData, instructor_id: e.target.value })}>
                         {instructors.map((instructor) => (
@@ -99,9 +99,9 @@ const AddCar = () => {
                 </FormControl>
                 <input accept="image/*" type="file" onChange={handleFileChange} style={{ display: 'none' }} id="upload-button" />
                 <label htmlFor="upload-button">
-                    <Button variant="contained" component="span" sx={{ mt: 2 }}>Upload Image</Button>
+                    <Button variant="contained" component="span" sx={{ mt: 2,marginRight: 1 }}>Incarca Imagine</Button>
                 </label>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>Submit</Button>
+                <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>Adauga</Button>
             </Paper>
             {snackbar.open && (
                 <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={() => setSnackbar({ ...snackbar, open: false })}>

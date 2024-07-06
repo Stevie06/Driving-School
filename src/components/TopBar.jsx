@@ -50,11 +50,12 @@ const TopBar = () => {
         >
           <MenuItems/>
         </Drawer>
-        <IconButton onClick={handleMenu} size="large" sx={{ p: 0 }}>
+        <IconButton onClick={handleMenu} size="large" sx={{ p: 1 }}>
           <Avatar alt="User" /> 
         </IconButton>
         <Menu
           id="menu-appbar"
+          style={{ marginTop: '45px' }}
           anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'top',
