@@ -48,7 +48,7 @@ const AboutUs = () => {
                     />
                     <Marker position={position}>
                         <Popup>
-                            Our Company is located here. <br /> Visit us!
+                            Compania noastra este localizata aici. <br /> Viziteaza-ne!
                         </Popup>
                     </Marker>
                 </MapContainer>
