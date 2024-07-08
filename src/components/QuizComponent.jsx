@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, CircularProgress, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Box, Button, Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, CircularProgress, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Paper, Icon } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
 import TopBar from './TopBar';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const QuizComponent = () => {
     const [questions, setQuestions] = useState([]);
@@ -37,10 +38,20 @@ const QuizComponent = () => {
         try {
             const { data, error } = await supabase
                 .from('questions')
-                .select('*')
-                .limit(26);
+                .select('id');
             if (error) throw error;
-            setQuestions(data);
+            const question_ids = [];
+            for (let i = 0; i < 26; i++) {
+               const random_index = Math.floor(Math.random() * data.length);
+               question_ids.push(data[random_index].id);
+               data.splice(random_index, 1); 
+            }
+            const { data: questionsData, error: questionsError } = await supabase
+                .from('questions')
+                .select('*')
+                .in('id', question_ids);
+            if (questionsError) throw questionsError;
+            setQuestions(questionsData);
         } catch (error) {
             console.error('Error fetching questions:', error.message);
         }
@@ -62,7 +73,7 @@ const QuizComponent = () => {
         } else {
             setIncorrectAnswers(incorrectAnswers + 1);
             if (incorrectAnswers > 4) {
-                endQuiz(false,'Ati fost respins' );
+                endQuiz(false,'Ati fost respins!' );
                 return;
             }
         }
@@ -130,11 +141,15 @@ const QuizComponent = () => {
                 <Box sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
                     <Card raised sx={{ mb: 4, width: '100%', alignItems: 'center' }}>
                         <CardContent>
+                            <Icon sx={{ color: '#FFD700', mr: 1 }}>
+                                <EventAvailableIcon />
+                            </Icon>
                             <Typography sx={{ fontSize: '1.2rem' }}>Timp ramas: {formatTime()}</Typography>
                             <Typography sx={{ fontSize: '1rem', textAlign:'end' }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
                                 Intrebari Corecte: {correctAnswers} <br />
                                 Intrebari Gresite: {incorrectAnswers} <br />
                             </Typography>
+                            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3, width: '100%' }}>
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 2, padding: 2 }}>
                                 Intrebarea {currentQuestionIndex + 1} din {questions.length}
                             </Typography>
@@ -148,6 +163,7 @@ const QuizComponent = () => {
                                 <FormControlLabel value="b" control={<Radio />} label={currentQuestion.answer_b} />
                                 <FormControlLabel value="c" control={<Radio />} label={currentQuestion.answer_c} />
                             </RadioGroup>
+                        </Paper>
                         </CardContent>
                         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: 2 }}>
                             <Button

@@ -48,12 +48,13 @@ const AddCar = () => {
             console.error('Error uploading image:', error);
             return;
         }
+        console.log('Image uploaded successfully:', data);
 
-        const { publicURL } = supabase.storage
+        const response = supabase.storage
             .from('car-images')
             .getPublicUrl(data.Key);
-
-        return publicURL;
+        console.log(response);
+        return response.data.publicUrl;
     };
 
     const handleSubmit = async (event) => {
@@ -62,6 +63,7 @@ const AddCar = () => {
         if (photo_url) {
             carData.photo_url = photo_url;
         }
+        console.log(photo_url);  
 
         const { error } = await supabase
             .from('cars')
