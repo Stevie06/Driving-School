@@ -12,7 +12,6 @@ const AddStudent = () => {
         cnp: '',
         phone: '',
         address: '',
-        //Dateofbirth: '',
         instructorid: ''
     });
     const [instructors, setInstructors] = useState([]);
@@ -174,6 +173,7 @@ const AddStudent = () => {
             </FormControl>
             <Button
                 type="submit"
+                onClick={handleSubmit}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}>

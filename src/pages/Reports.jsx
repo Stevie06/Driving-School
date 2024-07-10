@@ -5,6 +5,7 @@ import SessionDurationHistogram from "../components/SessionDurationHistogram";
 import { Grid } from "@mui/material";
 import QuizStatusChart from "../components/QuizStatusChart";
 import InstructorRatingsChart from "../components/InstructorRatingsChart";
+import InstructorStudentChart from "../components/InstructorStudentChart";
 const Reports = () => {
     const navigate = useNavigate();
 
@@ -20,6 +21,9 @@ const Reports = () => {
         </Grid>
         <Grid item xs={12} md={6}>
             <InstructorRatingsChart/>
+        </Grid>
+        <Grid item xs={12} md={6}>
+            <InstructorStudentChart/>
         </Grid>
         </Grid>
         </div>

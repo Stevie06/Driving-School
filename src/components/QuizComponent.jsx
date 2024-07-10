@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
 import TopBar from './TopBar';
+import TimerIcon from '@mui/icons-material/Timer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const QuizComponent = () => {
@@ -138,18 +139,19 @@ const QuizComponent = () => {
         <div>
             <TopBar />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+                <Box sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '1200px',height: '100vh', margin: '0 auto' }}>
                     <Card raised sx={{ mb: 4, width: '100%', alignItems: 'center' }}>
                         <CardContent>
+                            <Typography sx={{ fontSize: '1.2rem' }}>
                             <Icon sx={{ color: '#FFD700', mr: 1 }}>
-                                <EventAvailableIcon />
+                                <TimerIcon />
                             </Icon>
-                            <Typography sx={{ fontSize: '1.2rem' }}>Timp ramas: {formatTime()}</Typography>
-                            <Typography sx={{ fontSize: '1rem', textAlign:'end' }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
+                                Timp ramas: {formatTime()}</Typography>
+                            <Typography sx={{ fontSize: '1rem', textAlign:'end',mb: 2 }}>Intrebari Ramase: {questions.length - currentQuestionIndex - 1} <br />
                                 Intrebari Corecte: {correctAnswers} <br />
                                 Intrebari Gresite: {incorrectAnswers} <br />
                             </Typography>
-                            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3, width: '100%' }}>
+                            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3, width: '97%' }}>
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 2, padding: 2 }}>
                                 Intrebarea {currentQuestionIndex + 1} din {questions.length}
                             </Typography>
@@ -169,6 +171,7 @@ const QuizComponent = () => {
                             <Button
                                 variant="contained"
                                 color="primary"
+                                sx={{ width: 200,height: 50, mr: 2 }}
                                 onClick={handleNextQuestion}
                                 disabled={!selectedOption}
                                 

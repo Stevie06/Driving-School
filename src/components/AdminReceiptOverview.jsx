@@ -53,7 +53,7 @@ const AdminReceiptsOverview = () => {
     
     return (
         <Box sx={{ maxWidth: 600, margin: 'auto', mt: 1 }}>
-            <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
+            <Paper elevation={3} sx={{ p: 2, mb: 3,bgcolor: '#f5f5f5' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
                     <Icon sx={{ color: '#FFD700', mr: 1 }}>
                         <InfoIcon/>
@@ -61,7 +61,7 @@ const AdminReceiptsOverview = () => {
                     <Typography variant="h6" gutterBottom>Tabel chitante studenti</Typography>
                 </Box>
             </Paper> 
-            <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
+            <Paper elevation={3} sx={{ p: 2, mb: 3,bgcolor: '#f5f5f5' }}>
             <TextField
                 fullWidth
                 label="Cauta student dupa nume"

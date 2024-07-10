@@ -10,7 +10,7 @@ const Sesiune_condus = () => {
     return (
         <div>
             <TopBar />
-            <Container sx={{ display: 'flex', paddingTop: '64px', height: 'calc(100vh - 64px)', alignItems: 'stretch' }}>
+            <Container sx={{ display: 'flex',paddingTop:'32px',  alignItems: 'stretch' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                         <SessionForm />

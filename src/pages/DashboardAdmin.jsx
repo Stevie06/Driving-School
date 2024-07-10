@@ -92,7 +92,7 @@ const DashboardAdmin = () => {
                     title="Bine ai venit!"
                     description={'Verifica-ti programul, gestioneaza-ti programarile sau adauga sesiuni de condus!'}
                 />
-                <Grid container spacing={4} paddingX={3} paddingTop={8} >
+                <Grid container spacing={4} paddingX={3} paddingTop={4} >
                     {cardData.map((card, index) => (
                         <Grid item xs={12} sm={4} key={index}>
                             <Card sx={{ display: 'flex', bgcolor: card.bgcolor, height: '100%' }}>
@@ -112,7 +112,7 @@ const DashboardAdmin = () => {
                         </Grid>
                     ))}
                 </Grid>
-                <Grid container spacing={2} columnGap={5} paddingTop={10} paddingX={5} alignItems="flex-start"> 
+                <Grid container spacing={2} columnGap={5} paddingTop={8} paddingX={5} alignItems="flex-start"> 
                     <StudentsTable/>
                     <CarCarousel/>  
                 </Grid>

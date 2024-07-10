@@ -47,7 +47,7 @@ const ReceiptsOverview = () => {
 
     return (
         <Box sx={{ maxWidth: 800, margin: 'auto', mt: 1 }}>
-            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
+            <Paper elevation={3} sx={{ Color: '#f5f5f5', p: 2, mb: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
                     <Icon sx={{ color: '#FFD700', mr: 1 }}>
                         <PaidIcon/>
@@ -55,7 +55,7 @@ const ReceiptsOverview = () => {
                     <Typography variant="h6" gutterBottom>Tabel suma achitata</Typography>
                 </Box>
             </Paper>
-            <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3 }}>
+            <Paper elevation={3} sx={{ Color: '#f5f5f5', p: 2, mb: 3 }}>
                 <Typography variant="h6" gutterBottom>
                     Suma platita: {totalReceived.toFixed(1)} lei / {targetAmount} lei
                 </Typography>

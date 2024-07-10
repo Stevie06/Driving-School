@@ -41,7 +41,7 @@ function MenuItems() {
     { text: 'Sesiune de condus', path: '/Sesiune_condus', Icon: MenuBookIcon, color: 'gray', roles: ['instructor'] },
     { text: 'Studenti', path: '/Studenti', Icon: Person, color: 'gray', roles: ['admin', 'instructor'] },
     { text: 'Masina', path: '/Masina', Icon: DirectionsCarIcon, color: 'gray', roles: ['admin'] },
-    { text: 'Quiz', path: '/Quiz', Icon: EventNoteIcon, color: 'gray', roles: ['user', 'admin'] },
+    { text: 'Chestionar', path: '/Quiz', Icon: EventNoteIcon, color: 'gray', roles: ['user', 'admin'] },
     { text: 'Facturi', path: '/Receipts', Icon: ReceiptIcon, color: 'gray', roles: ['user'] },
     { text: 'Facturi', path: '/Receipts_Admin', Icon: ReceiptIcon, color: 'gray', roles: ['admin', 'instructor'] },
     { text: 'Rapoarte', path: '/Reports', Icon: BarChartIcon, color: 'gray', roles: ['admin'] },
