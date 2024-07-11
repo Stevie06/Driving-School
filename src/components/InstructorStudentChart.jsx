@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Grid, Container,Icon } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import supabase from '../client';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const InstructorStudentChart = () => {
     const [chartData, setChartData] = useState([]);
@@ -41,16 +42,16 @@ const InstructorStudentChart = () => {
     };
 
     return (
-        <Box sx={{ mt: 4,marginLeft: 5 }}>
+        <Box sx={{ mt: 4 }}>
             <Paper elevation={3} sx={{ p: 2, mb: 3, width: 620 }}>
                 <Typography variant="h6" sx={{ color: '#333' }}>
                     <Icon sx={{ color: '#FFD700', mr: 1 }}>
-                        <RateReviewIcon />
+                        <BarChartIcon />
                     </Icon>
-                Recenziile instructorilor
+                   Numar Studenti per Instructor
                 </Typography>
             </Paper>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="92%" height={400} >
             <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />

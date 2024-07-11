@@ -3,6 +3,7 @@ import { supabase } from '../client';
 import { Button, TextField, Typography, Container, Paper, Grid, Box, Snackbar, Alert } from '@mui/material';
 import { RollerShades } from '@mui/icons-material';
 
+
 const AddInstructor = () => {
     const [authData, setAuthData] = useState({
         email: '',
@@ -14,6 +15,7 @@ const AddInstructor = () => {
         cnp: '',
         phone: '',
         address: ''
+        
     });
 
     const [open, setOpen] = useState(false);
@@ -60,7 +62,7 @@ const AddInstructor = () => {
                     cnp: InstructorData.cnp,
                     phone: InstructorData.phone,
                     address: InstructorData.address,
-                    //role: 'instructor',
+                    role: 'instructor'
                 })
                 .eq('id', user.id); 
     

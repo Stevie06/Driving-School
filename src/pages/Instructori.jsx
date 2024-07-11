@@ -15,19 +15,6 @@ const Instructori = () => {
                     <Grid item xs={12} md={6}>
                         <AddInstructor />
                     </Grid>
-                    <Grid item xs={12} md={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Paper sx={{ 
-                            width: '100%', 
-                            height: '100%', 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            color: 'gray',
-                            backgroundSize: 'cover', 
-                            backgroundPosition: 'center' 
-                        }}>
-                        </Paper>
-                    </Grid>
                 </Grid>
             </Container>
         </div>

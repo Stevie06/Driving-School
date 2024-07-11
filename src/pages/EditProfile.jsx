@@ -81,7 +81,6 @@ const EditProfile = () => {
     setSnackbarOpen(false);
   };
 
-  if (loading) return <div>Loading...</div>;
   if (!userId) return <div>Niciun utilizator autentificat.</div>;
 
   return (
@@ -102,6 +101,7 @@ const EditProfile = () => {
                 margin='normal'
                 fullWidth
                 label="Nume" 
+                InputLabelProps={{ shrink: true }}
                 name="username" 
                 value={userData.username} 
                 onChange={handleInputChange} 
@@ -109,7 +109,8 @@ const EditProfile = () => {
                 <TextField
                 margin="normal"
                 fullWidth 
-                label="Email" 
+                label="Email"
+                InputLabelProps={{ shrink: true }}
                 name="email" 
                 value={userData.email} 
                 onChange={handleInputChange} 
@@ -117,7 +118,8 @@ const EditProfile = () => {
                 <TextField 
                 margin='normal'
                 fullWidth
-                label="Numar de telefon" 
+                label="Telefon"
+                InputLabelProps={{ shrink: true }}
                 name="phone" 
                 value={userData.phone} 
                 onChange={handleInputChange}
@@ -126,6 +128,7 @@ const EditProfile = () => {
                 margin="normal"
                 fullWidth 
                 label="Adresa" 
+                InputLabelProps={{ shrink: true }}
                 name="address" 
                 value={userData.address} 
                 onChange={handleInputChange} 

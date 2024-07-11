@@ -62,7 +62,7 @@ const QuizHistory = () => {
                 <Typography variant="h6">Istoric Chestionare</Typography>
             </Box>
         </Paper>
-        <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3,width: 650, height: 300 }}>
+        <Paper elevation={3} sx={{ bgcolor: '#f5f5f5', p: 2, mb: 3,width: 650, maxHeight: 800 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', color: '#333' }}>
             <Table sx={{ minWidth: 650 }}>
                 <TableHead>

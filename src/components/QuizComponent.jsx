@@ -73,8 +73,8 @@ const QuizComponent = () => {
             setCorrectAnswers(correctAnswers + 1);
         } else {
             setIncorrectAnswers(incorrectAnswers + 1);
-            if (incorrectAnswers > 4) {
-                endQuiz(false,'Ati fost respins!' );
+            if (incorrectAnswers > 3) {
+                endQuiz(false,'Ati fost respins' );
                 return;
             }
         }
@@ -85,7 +85,7 @@ const QuizComponent = () => {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setSelectedOption('');
         } else {
-            endQuiz(true,'Ati fost admis!');
+            endQuiz(true,'Ati fost admis');
             
         }
     };

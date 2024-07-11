@@ -60,11 +60,11 @@ const QuizStatusChart = () => {
                         labelLine={false}
                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                         outerRadius={100}
-                        fill="#8884d8"
+                        fill="#2196f3"
                         dataKey="value"
                     >
                         {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={index === 0 ? '#82ca9d' : '#8884d8'} />
+                            <Cell key={`cell-${index}`} fill={index === 0 ? '#2196f3' : '#8884d8'} />
                         ))}
                     </Pie>
                     <Tooltip />

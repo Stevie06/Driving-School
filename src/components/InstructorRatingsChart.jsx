@@ -68,7 +68,7 @@ const InstructorRatingsChart = () => {
         <YAxis label={{ value: 'Ratings', angle: -90, position: 'insideLeft' }} />
         <Tooltip />
         <Legend />
-        <Bar dataKey="Rating" fill="#8884d8" barSize={20} />
+        <Bar dataKey="Rating" fill="#2196f3" barSize={20} />
       </BarChart>
     </ResponsiveContainer>
     </Box>

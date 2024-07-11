@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Tooltip, Popover, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Tooltip, Popover } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -17,11 +17,33 @@ const StudentsTable = () => {
     }, []);
 
     const fetchUsersAndInstructors = async () => {
-        const { data: usersData, error: usersError } = await supabase.from('users').select('*');
+        const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('*');
+        
         if (usersError) {
             console.error('Error fetching users:', usersError);
             return;
         }
+
+        const { data: sessionsData, error: sessionsError } = await supabase
+            .from('driving_sessions')
+            .select('student_id');
+
+        if (sessionsError) {
+            console.error('Error fetching session data:', sessionsError);
+            return;
+        }
+
+        const sessionCountMap = sessionsData.reduce((acc, session) => {
+            acc[session.student_id] = acc[session.student_id] ? acc[session.student_id] + 1 : 1;
+            return acc;
+        }, {});
+
+        const usersWithSessionCounts = usersData.map(user => ({
+            ...user,
+            sessioncount: sessionCountMap[user.id] || 0
+        }));
 
         const instructorMap = {};
         usersData.forEach(user => {
@@ -31,7 +53,7 @@ const StudentsTable = () => {
         });
 
         setInstructors(instructorMap);
-        setUsers(usersData.filter(user => user.role === 'user'));
+        setUsers(usersWithSessionCounts.filter(user => user.role === 'user'));
     };
 
     const handleSearchClick = (event) => {
@@ -55,12 +77,16 @@ const StudentsTable = () => {
     };
 
     const sortedUsers = () => {
-        let sortableUsers = users.filter(user => user.username.toLowerCase().includes(search));
+        let sortableUsers = users.filter(user => {
+            return user.username && user.username.toLowerCase().includes(search);
+        });
         sortableUsers.sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
+            let nameA = a[sortConfig.key] ? a[sortConfig.key].toString().toLowerCase() : '';
+            let nameB = b[sortConfig.key] ? b[sortConfig.key].toString().toLowerCase() : '';
+            if (nameA < nameB) {
                 return sortConfig.direction === 'ascending' ? -1 : 1;
             }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
+            if (nameA > nameB) {
                 return sortConfig.direction === 'ascending' ? 1 : -1;
             }
             return 0;
@@ -73,7 +99,7 @@ const StudentsTable = () => {
 
     return (
         <TableContainer component={Paper} elevation={3} sx={{ maxWidth:880 }}>
-            <Table  aria-label="simple table">
+            <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell>

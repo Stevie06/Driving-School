@@ -23,7 +23,7 @@ const ChangePassword = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (passwords.newPassword !== passwords.confirmPassword) {
-            setMessage('New passwords do not match.');
+            setMessage('Parola noua nu corespunde.');
             setOpen(true);
             return;
         }
@@ -86,8 +86,8 @@ const ChangePassword = () => {
                         onChange={handleChange}
                         autoComplete="new-password"
                     />
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                        Actualizeaza parola
+                    <Button type="submit" onClick={handleSubmit} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        Actualizeaza parola!
                     </Button>
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>

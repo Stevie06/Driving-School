@@ -118,6 +118,7 @@ const AddStudent = () => {
                 fullWidth
                 label="Parola"
                 name="password"
+                type="password"
                 value={authData.password}
                 onChange={handleChangeAuth}
             />

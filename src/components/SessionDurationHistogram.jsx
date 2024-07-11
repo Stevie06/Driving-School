@@ -57,7 +57,7 @@ const SessionDurationHistogram = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="count" fill="#ffd700" />
+                    <Bar dataKey="count" fill="#8884d8" />
                 </BarChart>
             ) : <Typography>Nu exista date.</Typography>}
             
